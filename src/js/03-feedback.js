@@ -6,16 +6,15 @@ const MessageInput = document.querySelector('textarea');
 
 const STORAGE_KEY = 'feedback-form-state';
 
-const formData = {};
-
 formEl.addEventListener('submit', OnFormSubmit);
-formEl.addEventListener('input', debounce(OnFormChange, 500));
+formEl.addEventListener('input', debounce(onChangeForm, 500));
 
-function OnFormChange(e) {
-  formData[e.target.name] = e.target.value;
-  console.log('OnFormChange  e.target.name', e.target.name);
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
-  console.log('formData', formData);
+function onChangeForm(e) {
+  console.log('onChangeForm  e', e);
+  const fd = new FormData(formEl);
+  const email = fd.get('email').trim();
+  const message = fd.get('message').trim();
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({ email, message }));
 }
 
 function OnFormSubmit(evt) {
